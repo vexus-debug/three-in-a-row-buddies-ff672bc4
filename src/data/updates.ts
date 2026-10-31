@@ -13,6 +13,19 @@ export interface UpdateEntry {
 
 export const updates: UpdateEntry[] = [
   {
+    version: "v2.45.0",
+    date: "October 31, 2026",
+    title: "New dental lab home: Production Command Center",
+    kind: "improvement",
+    items: [
+      { kind: "feature", text: "Headline cards show work-in-progress value, due today, late and rush, on-time rate with average turnaround, and holds. Tap a card to open that list." },
+      { kind: "feature", text: "Production pipeline shows how many cases are at each stage, marks the busiest one, and lets you tap a stage to see its cases." },
+      { kind: "feature", text: "New charts: cases received vs. finished over 14 days, and the mix of restorations in production." },
+      { kind: "improvement", text: "Needs-attention list now has tabs (Late & rush, Due today, On hold, Ready to ship) with doctor, patient, shade and days-late countdown." },
+      { kind: "feature", text: "Busiest clients and bench workload per technician, with unassigned cases highlighted." },
+    ],
+  },
+  {
     version: "v2.44.0",
     date: "October 31, 2026",
     title: "Faster lab billing: aging cards, invoice panel and payment allocation",
