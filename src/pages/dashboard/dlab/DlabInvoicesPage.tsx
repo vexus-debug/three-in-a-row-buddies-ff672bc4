@@ -159,7 +159,9 @@ export default function DlabInvoicesPage({ agingFilter = null, onClearAging }: {
   };
 
   const live = invoices.filter((i) => i.status !== "void");
-  const outstanding = live.reduce((s, i) => s + Number(i.total_amount) - Number(i.amount_paid), 0);
+  const outstanding = live.reduce((s, i) => s + Math.max(0, Number(i.total_amount) - Number(i.amount_paid)), 0);
+  const billed = live.reduce((s, i) => s + Number(i.total_amount), 0);
+  const collected = live.reduce((s, i) => s + Math.min(Number(i.amount_paid), Number(i.total_amount)), 0);
 
   return (
     <div className="space-y-6">
@@ -167,10 +169,11 @@ export default function DlabInvoicesPage({ agingFilter = null, onClearAging }: {
         <PageHeader title="Invoices" description="Itemised and consolidated invoices, rush fees, add-ons and printable tax invoices.">
           <Button variant="outline" onClick={() => { setBankForm(bank?.data || {}); setBankOpen(true); }}><Landmark className="mr-1 h-4 w-4" />Payment details</Button>
         </PageHeader>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Invoiced</p><p className="text-xl font-semibold">{money(live.reduce((s, i) => s + Number(i.total_amount), 0))}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Outstanding</p><p className="text-xl font-semibold">{money(outstanding)}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Cases ready to bill</p><p className="text-xl font-semibold">{ready.length}</p></CardContent></Card>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Total billed</p><p className="text-xl font-semibold tabular-nums">{money(billed)}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Collected</p><p className="text-xl font-semibold tabular-nums text-primary">{money(collected)}</p>{billed > 0 && <p className="text-xs text-muted-foreground">{Math.round((collected / billed) * 100)}% collected</p>}</CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Outstanding</p><p className={`text-xl font-semibold tabular-nums ${outstanding > 0 ? "text-destructive" : "text-muted-foreground"}`}>{money(outstanding)}</p>{billed > 0 && outstanding <= 0 && <p className="text-xs text-muted-foreground">All settled</p>}</CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-xs text-muted-foreground">Cases ready to bill</p><p className="text-xl font-semibold tabular-nums">{ready.length}</p></CardContent></Card>
         </div>
 
         {ready.length > 0 && (

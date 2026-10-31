@@ -21,9 +21,10 @@ export default function AgingKpiStrip({ value, onChange }: { value: AgingBucket 
 
   return (
     <section aria-label="Receivables aging" className="space-y-2">
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
         {CARDS.map((c) => {
           const active = value === c.b;
+          const has = totals[c.b].amount > 0;
           return (
             <button
               key={c.b}
@@ -33,10 +34,10 @@ export default function AgingKpiStrip({ value, onChange }: { value: AgingBucket 
               className={`rounded-lg border bg-card p-3 text-left transition-colors hover:bg-muted/50 ${active ? "border-primary ring-2 ring-primary" : "border-border"}`}
             >
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${c.bar}`} />{c.label}</span>
+                <span className="flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${has ? c.bar : "bg-muted-foreground/40"}`} />{c.label}</span>
                 {c.b === "90_plus" && totals[c.b].count > 0 && <span className="flex items-center gap-1 font-medium text-destructive"><ShieldAlert className="h-3 w-3" />Hold</span>}
               </div>
-              <p className={`mt-1 text-lg font-semibold tabular-nums ${c.tone}`}>{money(totals[c.b].amount)}</p>
+              <p className={`mt-1 text-lg font-semibold tabular-nums ${has ? c.tone : "text-muted-foreground"}`}>{money(totals[c.b].amount)}</p>
               <p className="text-xs text-muted-foreground">{totals[c.b].count} invoice{totals[c.b].count === 1 ? "" : "s"}</p>
             </button>
           );
