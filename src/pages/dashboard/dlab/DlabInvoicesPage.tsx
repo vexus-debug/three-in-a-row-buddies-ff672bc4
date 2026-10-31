@@ -219,7 +219,7 @@ export default function DlabInvoicesPage({ agingFilter = null, onClearAging }: {
 
         <Card><CardContent className="p-0 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-left"><tr>{<th className="w-8 p-3"><Checkbox aria-label="Select all" checked={filtered.length > 0 && filtered.every((i) => selected.has(i.id))} onCheckedChange={(v) => setSelected(v ? new Set(filtered.map((i) => i.id)) : new Set())} /></th>{["Invoice", "Date", "Due", "Clinic", "Patient", "Lines", "Total", "Balance", "Overdue", "Status", ""].map((h) => <th key={h} className={`p-3 font-medium ${["Total", "Balance", "Overdue"].includes(h) ? "text-right" : ""}`}>{h}</th>)}</tr></thead>
+            <thead className="bg-muted/50 text-left"><tr>{<th className="w-8 p-3"><Checkbox aria-label="Select all" checked={filtered.length > 0 && filtered.every((i) => selected.has(i.id))} onCheckedChange={(v) => setSelected(v ? new Set(filtered.map((i) => i.id)) : new Set())} /></th>}{["Invoice", "Date", "Due", "Clinic", "Patient", "Lines", "Total", "Balance", "Overdue", "Status", ""].map((h) => <th key={h} className={`p-3 font-medium ${["Total", "Balance", "Overdue"].includes(h) ? "text-right" : ""}`}>{h}</th>)}</tr></thead>
             <tbody>
               {filtered.length === 0 && <tr><td colSpan={12} className="p-6 text-center text-muted-foreground">No invoices yet.</td></tr>}
               {filtered.map((i) => {
